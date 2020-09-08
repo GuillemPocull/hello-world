@@ -1,0 +1,790 @@
+---
+title: "Statistical Analysis of the Fruit Survey"
+author: "Guillem Pocull Bellés"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    toc: true
+    theme: united
+    df_print: paged
+subtitle: Master Thesis of "Conservación y Biodiversidad en Áreas Tropicales" - RJB-CSIC.
+editor_options:
+  chunk_output_type: inline
+---
+
+## 0. Install and load packages
+
+```{r results='hide', message=FALSE, warning=FALSE}
+library('ggplot2')
+library('lattice')
+library('purrr')
+library('dplyr')
+library('carData')
+library('ggpubr')
+library('readr')
+library('cowplot')
+library('tinytex')
+library('tidyverse')
+library('caret')
+```
+
+
+## 1. Envelopes
+
+### 1.0. Preparation
+
+#### 1.0.1. Metadata
+
+- Envelope_ID: identification of the envelope with 2 fruits from the plant.
+- Flank: colour/place of the flowers of the plant.
+- Fruits: total number of fruits from the plant.
+- Holes: number of  fruits with a hole from the plant.
+- Damage: percentage of fruits with a hole respectively from the total (holes/fruits)
+
+- ***: the fact that there is significant differences between these flanks, it doesn't mean there are significant differences between subspecies 'pseudomajus' (magenta) and 'striatum' (yellow). If we say so, we are commiting pseudoreplication in this particularly case.
+
+
+#### 1.0.2. Open Data
+
+```{r}
+envelopes <- read_delim("Data_Envelopes.csv",";", escape_double = FALSE, 
+                             col_types = cols(Envelope_ID = col_character()), trim_ws = TRUE)
+
+View(envelopes)  
+str(envelopes)  
+```
+
+### 1.1. Modify and visualize datasheets 
+
+Transform data to 'data.frame'
+
+```{r}
+envelopes_df <- as.data.frame(envelopes)
+View(envelopes_df)
+```
+
+
+Preparation of the Summary Table
+
+```{r results='hide', message=FALSE, warning=FALSE}
+sum_fruits <- as.data.frame(group_by(envelopes_df, Flank) %>%
+                           summarise(
+                             count = n(),
+                             mean = mean(Fruits, na.rm = TRUE),
+                             sd = sd(Fruits, na.rm = TRUE))) 
+
+sum_holes <- as.data.frame(group_by(envelopes_df, Flank) %>%
+                           summarise(
+                             count = n(),
+                             mean = mean(Holes, na.rm = TRUE),
+                             sd = sd(Holes, na.rm = TRUE)))   
+
+sum_damage <- as.data.frame(group_by(envelopes_df, Flank) %>%
+                           summarise(
+                             count = n(),
+                             mean = mean(Damage, na.rm = TRUE),
+                             sd = sd(Damage, na.rm = TRUE)))
+
+summarise_rbind <- rbind(sum_fruits,sum_holes,sum_damage)
+envelopes_summarise <- data.frame(Type=c("fruits", "fruits", "holes", "holes", "damage", "damage"),summarise_rbind)
+
+```
+
+Summary of the mean and standard deviation of fruits, holes and damage
+
+```{r}
+envelopes_summarise
+```
+
+
+We save the summary to '.csv'
+```{r}
+write.csv(envelopes_summarise, "C:/Users/guill/Desktop/TFM/R/Script_Fruits/envelopes_summarise.csv",
+          row.names=F, fileEncoding = "UTF-8")
+```
+
+
+### 1.2. Statistics
+
+#### 1.2.1. Shapiro Test 
+
+Shapiro Test of all data to analyze the normality of data
+
+```{r}
+shapiro.test(envelopes_df$Fruits) # for fruits:  p-value < 0.001
+shapiro.test(envelopes_df$Damage) # for damage:  p-value = 0.0017
+
+# Any of the variables has normality.
+
+```
+
+
+
+Shapiro Test of each magenta or yellow data
+
+```{r}
+envelopes_magenta <- envelopes_df %>% filter(Flank == "Magenta") 
+View(envelopes_magenta)
+
+envelopes_yellow <- envelopes_df %>% filter(Flank == "Yellow") 
+View(envelopes_yellow)
+
+shapiro.test(envelopes_magenta$Fruits) # for fruits:  p-value < 0.001
+shapiro.test(envelopes_magenta$Damage) # for damage:  p-value =0.189
+
+shapiro.test(envelopes_yellow$Fruits)  # for fruits:  p-value < 0.001
+shapiro.test(envelopes_yellow$Damage)  # for damage:  p-value < 0.001
+
+# Only 'Damage' for the magenta has data with normality.
+```
+
+Visualize the normality curve
+
+- Fruits
+
+```{r}
+ggdensity(envelopes_df$Fruits, 
+          main = "Density plot Normality",
+          xlab = "Fruits")
+
+# In the graphic we can visualize the no-normality of the data
+```
+
+- Damage: because it has certain normality.
+
+```{r}
+ggplot(envelopes_df, aes(x=Damage, colour=Flank)) + geom_density()
+
+# We can visualize Magenta Flank has data with normality.
+```
+
+
+#### 1.2.2. Kruskal wallis test: non-parametrical test
+
+```{r}
+kruskal.test(Fruits ~ Flank, data = envelopes_df)  # for fruits:  p-value < 0.001
+kruskal.test(Damage ~ Flank, data = envelopes_df)  # for damage:  p-value = 0.007
+
+# We have used non-parametrical tests for 'Damage' because the TOTAL p-value is 0.0017 when we don't select one colour.
+
+# There are significant difference of number of fruits and percentage of damage in one flank and another ***. 
+
+```
+
+
+#### 1.2.4. ANOVA test 
+
+We conduct an ANOVA test because there is an N > 30.
+
+```{r}
+# Compute the analysis of variance
+aov_fruits <- aov(Fruits ~ Flank, data = envelopes_df)
+aov_damage <- aov(Damage ~ Flank, data = envelopes_df)
+
+# Summary of the analysis
+summary(aov_fruits) # for fruits:  p-value < 0.001   (significant)
+summary(aov_damage) # for damage:  p-value = 0.029   (significant)
+
+# There is significant difference of number of fruits and percentage of damage between one flank and another ***.
+
+```
+ 
+ 
+#### 1.2.5. Linear regression
+
+```{r}
+cor_envelopes <- cor.test(envelopes_df$Fruits, envelopes_df$Damage, 
+                    method = "pearson")
+
+cor_envelopes
+
+summary(lm(envelopes_df$Fruits ~ envelopes_df$Damage))
+
+#  p-value < 0.001    (there is significant correlation) 
+#  Cor. coef. (r) = -0.4  
+#  Adjusted   R^2 = 0.15
+```
+
+
+#### 1.2.6. Non-lineal regression (Exponential Decay)
+
+```{r}
+exponential_cor_envelopes <- lm(log(envelopes_df$Damage)~ envelopes_df$Fruits)
+summary(exponential_cor_envelopes)
+```
+
+
+```{r}
+envelopes_df$Damage_log <- envelopes_df$Damage^2
+
+cor_envelopes2 <- cor.test(envelopes_df$Fruits, envelopes_df$Damage_log, 
+                    method = "pearson")
+cor_envelopes2
+
+summary(lm(envelopes_df$Fruits ~ envelopes_df$Damage_log))
+
+#  p-value < 0.006    (there is significant correlation) 
+#  Cor. coef. (r) = -0.33  
+#  Adjusted   R^2 = 0.1143
+```
+
+
+```{r}
+exp_decay_model_2 <- lm(Damage ~ log(Fruits), data = envelopes_df)
+summary(exp_decay_model_2)  
+# Residual standard error: 0.17
+# Adjusted R-squared: 0.21 (it is better than lineal model)
+```
+
+```{r}
+
+# Split the data into training and test set
+
+set.seed(123)
+
+training.samples <- envelopes_df$Damage %>%
+  createDataPartition(p = 0.8, list = FALSE)
+
+train.data  <- envelopes_df[training.samples, ]
+test.data   <- envelopes_df[-training.samples, ]
+
+
+# Build the model
+model <- lm(Damage ~ log(Fruits), data = envelopes_df)
+
+# Make predictions
+predictions <- model %>% predict(test.data)
+
+
+# Model performance
+data.frame(
+  RMSE = RMSE(predictions, test.data$Damage),
+  R2 = R2(predictions, test.data$Damage)
+)
+
+#  RMSE = 0.1398 
+#  R^2  = 0.3402
+
+# It has better results than linear model.
+```
+
+### 1.3. Graphical representation
+
+#### 1.3.1. Boxplot of Fruits
+
+```{r}
+ggboxplot(envelopes_df, x = "Flank", y = "Fruits", 
+          color = "Flank", palette = c("#C61DE5", "#E2D100"),
+          ylab = "Num Fruits", xlab = "Flank")
+```
+
+
+#### 1.3.2. Boxplot of Damage
+
+```{r}
+ggboxplot(envelopes_df, x = "Flank", y = "Damage", 
+          color = "Flank", palette = c("#C61DE5", "#E2D100"),
+          ylab = "Damage", xlab = "Flank")
+```
+
+
+#### 1.3.3. Correlation Damage vs number of Fruits
+
+
+
+##### 1.3.3.1. Linear
+
+```{r}
+ggscatter(envelopes_df, x = "Fruits", y = "Damage", color = "Flank", palette = c("#C61DE5", "#E2D100"), 
+          add = "reg.line", add.params = list(color = "blue", fill = "lightgray"), conf.int = TRUE, 
+          cor.coef = TRUE, cor.method = "pearson",
+          xlab = "number of fruits", ylab = "damage")
+```
+
+##### 1.3.3.2. Non linear
+
+```{r}
+ggplot(envelopes_df, aes(Fruits, Damage) ) +
+  geom_point() +
+  stat_smooth(method = lm, formula = y ~ log(x))
+
+# It seems magenta flank have plants with significantly less fruits and their plants are more damaged by weevils, compared with yellow flank.
+```
+
+
+
+## 2. Fruits
+
+### 2.0. Preparation
+
+#### 2.0.1 Metadata
+
+- Envelope_ID: identification of the envelope with the 2 fruits from the plant.
+- Flank: colour/place of the flowers of the plant.
+- Fruits: total number of fruits from the plant.
+- Holes: presence/absence holes in the fruit.
+- Larvae: number of larvae found in the fruit.
+- Presence_indirect: presence of larvae directly (observation) or indirectly (ancient activity of larvae).
+- Area_fruit: area of each fruit (lateral view).
+- Num_seeds: total numbers of seeds inside the fruit
+- Mean_area_seeds: mean of the area of the total number of seeds inside the fruit.
+- Threshold: lower/mininum threshold of the area of each seed to count it.
+
+
+
+- ***: the fact that there is significant differences between these flanks, it doesn't mean there are significant differences between subspecies 'pseudomajus' (magenta) and 'striatum' (yellow). If we say so, we are commiting pseudoreplication in this particularly case.
+
+#### 2.0.2. Open data
+
+```{r}
+fruits <- read_delim("Data_Fruits.csv", ";", escape_double = FALSE,na = "NA", 
+                                        col_types = cols(Envelope_ID = col_character(), 
+                                                         Holes = col_logical(), Threshold = col_double(),
+                                                         mean_area_seeds = col_double(), 
+                                                         presence_indirect = col_logical()), 
+                                        trim_ws = TRUE)
+View(fruits)
+str(fruits)
+
+```
+
+
+### 2.1. Modify and visualize datasheets 
+
+Transform data to 'data.frame'
+
+```{r}
+fruits_df <- as.data.frame(fruits)
+```
+
+#### 2.1.1. Flanks
+
+Preparation of the Summary Table
+
+```{r}
+
+flank_area_fruit <- as.data.frame(group_by(fruits_df, Flank) %>%
+                           summarise(
+                             count = n(),
+                             mean = mean(area_fruit, na.rm = TRUE),
+                             sd = sd(area_fruit, na.rm = TRUE))) 
+
+flank_num_seeds <- as.data.frame(group_by(fruits_df, Flank) %>%
+                           summarise(
+                             count = n(),
+                             mean = mean(num_seeds, na.rm = TRUE),
+                             sd = sd(num_seeds, na.rm = TRUE)))   
+
+flank_mean_area_seeds <- as.data.frame(group_by(fruits_df, Flank) %>%
+                           summarise(
+                             count = n(),
+                             mean = mean(mean_area_seeds, na.rm = TRUE),
+                             sd = sd(mean_area_seeds, na.rm = TRUE)))
+
+
+flank_rbind <- rbind(flank_area_fruit, flank_num_seeds, flank_mean_area_seeds)
+flank_fruits_summarise <- data.frame(Type=c("area fruit", "area fruit", "number seeds", "number seeds" , "area seeds", "area seeds"),flank_rbind)
+
+is.num <- sapply(flank_fruits_summarise, is.numeric)
+flank_fruits_summarise[is.num] <- lapply(flank_fruits_summarise[is.num], round, 4)
+
+```
+
+Summary of the mean and standard deviation of fruits, holes and damage
+
+```{r}
+flank_fruits_summarise
+```
+
+
+#### 2.1.2. Pierced Fruits
+
+Preparation of the Summary Table
+
+```{r}
+
+hole_area_fruit <- as.data.frame(group_by(fruits_df, Holes) %>%
+                           summarise(
+                             count = n(),
+                             mean = mean(area_fruit, na.rm = TRUE),
+                             sd = sd(area_fruit, na.rm = TRUE))) 
+
+hole_num_seeds <- as.data.frame(group_by(fruits_df, Holes) %>%
+                           summarise(
+                             count = n(),
+                             mean = mean(num_seeds, na.rm = TRUE),
+                             sd = sd(num_seeds, na.rm = TRUE)))   
+
+hole_mean_area_seeds <- as.data.frame(group_by(fruits_df, Holes) %>%
+                           summarise(
+                             count = n(),
+                             mean = mean(mean_area_seeds, na.rm = TRUE),
+                             sd = sd(mean_area_seeds, na.rm = TRUE)))
+
+
+hole_rbind <- rbind(hole_area_fruit, hole_num_seeds, hole_mean_area_seeds)
+hole_fruits_summarise <- data.frame(Type=c("area fruit", "area fruit", "number seeds", "number seeds" , "area seeds", "area seeds"),hole_rbind)
+
+is.num <- sapply(hole_fruits_summarise, is.numeric)
+hole_fruits_summarise[is.num] <- lapply(hole_fruits_summarise[is.num], round, 4)
+
+```
+
+Summary of the mean and standard deviation of fruits, holes and damage
+
+```{r}
+hole_fruits_summarise
+```
+
+#### 2.1.3. Indirect Presence
+
+Preparation of the Summary Table
+
+```{r}
+
+PI_area_fruit <- as.data.frame(group_by(fruits_df, presence_indirect) %>%
+                           summarise(
+                             count = n(),
+                             mean = mean(area_fruit, na.rm = TRUE),
+                             sd = sd(area_fruit, na.rm = TRUE))) 
+
+PI_num_seeds <- as.data.frame(group_by(fruits_df, presence_indirect) %>%
+                           summarise(
+                             count = n(),
+                             mean = mean(num_seeds, na.rm = TRUE),
+                             sd = sd(num_seeds, na.rm = TRUE)))   
+
+PI_mean_area_seeds <- as.data.frame(group_by(fruits_df, presence_indirect) %>%
+                           summarise(
+                             count = n(),
+                             mean = mean(mean_area_seeds, na.rm = TRUE),
+                             sd = sd(mean_area_seeds, na.rm = TRUE)))
+
+
+PI_rbind <- rbind(PI_area_fruit, PI_num_seeds, PI_mean_area_seeds)
+PI_fruits_summarise <- data.frame(Type=c("area fruit", "area fruit", "number seeds", "number seeds" , "area seeds", "area seeds"),PI_rbind)
+
+is.num <- sapply(PI_fruits_summarise, is.numeric)
+PI_fruits_summarise[is.num] <- lapply(PI_fruits_summarise[is.num], round, 4)
+
+```
+
+Summary of the mean and standard deviation of fruits, holes and damage
+
+```{r}
+PI_fruits_summarise
+```
+
+
+
+### 2.2. Statistics
+
+#### 2.2.1. Shapiro Test
+
+Shapiro Test to analyze the normality of data
+
+Shapiro Test of all data
+
+```{r}
+shapiro.test(fruits_df$area_fruit) # for area fruits:   p-value = 0.3766
+shapiro.test(fruits_df$num_seeds)  # for number seeds:  p-value = 0.08634
+
+# 'area_fruits' and 'num_seeds' display NORMAL data
+```
+
+
+Visualize the normality curve
+
+```{r}
+plot_grid(nrow = 1, ncol=2,
+          ggdensity(fruits_df$area_fruit, main = "Density plot Normality", xlab = "Area of Fruit"),
+          ggdensity(fruits_df$num_seeds, main = "Density plot Normality", xlab = "Number of Seeds"))
+```
+
+
+#### 2.2.2. ANOVA Test for 'flanks' variable
+
+We conduct an ANOVA test because the data is parametrical
+
+```{r}
+# Compute the analysis of variance (ANOVA)
+flank_aov_area_fruit <- aov(area_fruit ~ Flank, data = fruits_df)
+flank_aov_num_seeds <- aov(num_seeds ~ Flank, data = fruits_df)
+
+# Summary of the analysis
+summary(flank_aov_area_fruit) # for area of fruit:    p-value = 0.7960    (non-significant)
+summary(flank_aov_num_seeds)  # for number of seeds:  p-value = 0.0258    (significant)
+
+# There is significant difference of number of seeds between one flank and another. On the other hand, there is no significant diference of the area of the fruit between one flank and another ***.
+```
+ 
+
+#### 2.2.3. Paired Sample T-Test for 'holes' variable
+
+We conduct a T-Test because the data is normaly distributed.
+
+```{r}
+t.test(area_fruit ~ Holes, data=fruits_df, 
+       paired = TRUE, alternative = "two.sided")  # for area of fruit:    p-value = 0.5727   (non-significant)
+
+
+t.test(num_seeds ~ Holes, data=fruits_df, 
+       paired = TRUE, alternative = "two.sided")  # for number of fruit:  p-value < 0.001    (significant) 
+
+t.test(num_seeds ~ Holes, data=fruits_df, 
+       paired = TRUE, alternative = "greater")    # for number of fruit:  p-value < 0.001    (significant)
+```
+
+
+#### 2.2.4. ANOVA test for 'holes' variable
+
+We can conduct a one-way ANOVA Test test because the data is parametrical
+
+```{r}
+# Compute the analysis of variance (ANOVA)
+hole_aov_area_fruit <- aov(area_fruit ~ Holes, data = fruits_df)
+hole_aov_num_seeds <- aov(num_seeds ~ Holes, data = fruits_df)
+
+# Summary of the analysis
+summary(hole_aov_area_fruit) # for area of fruit:    p-value = 0.7140    (non-significant)
+summary(hole_aov_num_seeds)  # for number of seeds:  p-value = 0.0029    (significant)
+
+# There is significant difference of number of seeds between pierced / not pierced fruits. On the other hand, there is no significant diference of the area of the fruit between pierced / not pierced fruits ***.
+```
+
+
+#### 2.2.5. ANOVA for interaction 'flank - holes' variables for area of fruits
+
+We conduct an ANOVA two-way test test because the data is parametrical:
+
+
+```{r}
+aov2_area_fruits <- aov(area_fruit ~ Flank * Holes, data = fruits_df)
+
+summary(aov2_area_fruits)
+
+# There is NO significant difference of area of fruits between pierced / not pierced fruits, Flanks, neither the interaction of the two factors together ***.
+```
+
+#### 2.2.6. ANOVA for interaction 'flank - holes' variables for number of seeds
+
+```{r}
+aov2_num_seeds <- aov(num_seeds ~ Flank * Holes, data = fruits_df)
+
+summary(aov2_num_seeds)
+
+# There is significant difference of number of seeds between pierced / not pierced fruits and Flanks. Eventhough there is no significant differences on the interaction of the two factors together, p-value is considerably low (0.1183) ***.
+
+```
+
+
+#### 2.2.7. Paired Sample T-Test for indirect presence
+
+we cannot conduct a T-Test for indirect presence because the data hasn't the same sample size.
+
+
+#### 2.2.8. ANOVA test for indirect presence
+
+We conduct an ANOVA one-way test test because the data is parametrical
+
+```{r}
+# Compute the analysis of variance (ANOVA)
+PI_aov_area_fruit <- aov(area_fruit ~ presence_indirect, data = fruits_df)
+PI_aov_num_seeds <- aov(num_seeds ~ presence_indirect, data = fruits_df)
+
+# Summary of the analysis
+summary(PI_aov_area_fruit) # for area of fruit:    p-value = 0.571    (non-significant)
+summary(PI_aov_num_seeds)  # for number of seeds:  p-value < 0.001    (significant)
+
+# There is significant difference of number of seeds between pierced / not pierced fruits. On the other hand, there is no significant diference of the area of the fruit between pierced / not pierced fruits ***.
+
+```
+
+#### 2.2.9. ANOVA test for interactions of indirect presence of area of fruits
+
+We conduct an ANOVA two-way test test because the data is parametrical:
+
+```{r}
+PI_aov2_area_fruits <- aov(area_fruit ~ Flank * presence_indirect, data = fruits_df)
+summary(PI_aov2_area_fruits)
+
+# There is NO significant difference of area of fruits between presence / absence of larvae in fruits and Flanks, neither the interaction of the two factors together ***.
+```
+
+#### 2.2.10. ANOVA test for interactions of indirect presence of number of seeds
+
+
+```{r}
+PI_aov2_num_seeds <- aov(num_seeds ~ Flank * presence_indirect, data = fruits_df)
+
+summary(PI_aov2_num_seeds)
+
+# There is significant difference of number of seeds between presence / absence of larvae in fruits and Flanks. Eventhough there is no significant differences on the interaction of the two factors together, p-value is considerably low (0.1035) ***.
+
+```
+
+###### Correlation number of seeds vs. area of fruits
+
+First we create a data.frame with only NOT PIERCED fruits
+
+```{r}
+not_pierced_fruits_df <- fruits_df %>% filter(presence_indirect == "FALSE")
+
+View(not_pierced_fruits_df)
+
+# PI <- Presence Indirect
+```
+
+
+We do a Pearson Correlation test because our data is parametrical (normal distribution). ONLY with not-pierced fruits.
+
+```{r}
+correlation <- cor.test(not_pierced_fruits_df$area_fruit, not_pierced_fruits_df$num_seeds, 
+                    method = "pearson")
+
+correlation   
+
+#  p-value< 0.001    (there is significant correlation) 
+#  Cor. coef. (r) = 0.6198    
+```
+
+
+### 2.3. Graphical Representation
+
+#### 2.3.1. Flanks
+
+##### 2.3.1.1. Area of Fruits
+
+```{r}
+ggboxplot(fruits_df, x = "Flank", y = "area_fruit", 
+          color = "Flank", palette = c("#C61DE5", "#E2D100"),
+          ylab = "Area of Fruit (cm2)", xlab = "Flank")
+```
+
+##### 2.3.1.2. Number of Seeds
+
+```{r}
+ggboxplot(fruits_df, x = "Flank", y = "num_seeds", 
+          color = "Flank", palette = c("#C61DE5", "#E2D100"),
+          ylab = "Number of Seeds", xlab = "Flank")
+```
+
+#### 2.3.2. Holes
+
+##### 2.3.2.1. Area of fruits
+
+```{r}
+ggboxplot(fruits_df, x = "Holes", y = "area_fruit", 
+          color = "Holes", ylab = "Area of Fruit (cm2)", xlab = "Holes")
+```
+
+##### 2.3.2.2 Number of seeds
+
+```{r}
+ggboxplot(fruits_df, x = "Holes", y = "num_seeds", 
+          color = "Holes", ylab = "Number of Seeds", xlab = "Holes")
+```
+
+##### 2.3.2.3. Interactions 'flank - holes' per area of fruits
+
+```{r}
+ggboxplot(fruits_df, x = "Holes", y = "area_fruit", color = "Flank",
+          palette = c("#C61DE5", "#E2D100"))
+```
+
+
+#####  2.3.2.4. Interactions 'flank - holes' per number of seeds
+
+```{r}
+ggboxplot(fruits_df, x = "Holes", y = "num_seeds", color = "Flank",
+          palette = c("#C61DE5", "#E2D100"))
+```
+
+
+#### 2.3.3. Indirect presence
+
+##### 2.3.3.1. Area of Fruits
+
+```{r}
+ggboxplot(fruits_df, x = "presence_indirect", y = "area_fruit", 
+          color = "presence_indirect", palette = c("#C61DE5", "#E2D100"),
+          ylab = "Area of Fruit (cm2)", xlab = "Presence Indirect")
+```
+
+##### 2.3.3.2. Number of Seeds
+
+```{r}
+ggboxplot(fruits_df, x = "presence_indirect", y = "num_seeds", 
+          color = "presence_indirect", palette = c("#C61DE5", "#E2D100"),
+          ylab = "Number of Seeds", xlab = "Presence Indirect")
+```
+
+#####  2.3.2.4. Interactions 'flank - indirect presence' per area of fruit
+
+```{r}
+ggboxplot(fruits_df, x = "Flank", y = "area_fruit", color = "presence_indirect")
+```
+
+
+
+#####  2.3.2.4. Interactions 'flank - indirect presence' per area of fruit
+
+```{r}
+ggboxplot(fruits_df, x = "Flank", y = "num_seeds", color = "presence_indirect")
+```
+
+#### 2.3.4. Correlations
+
+##### 2.3.4.1.Number of seeds vs. area of fruit
+
+```{r}
+ggscatter(not_pierced_fruits_df, x = "area_fruit", y = "num_seeds", 
+          add = "reg.line", conf.int = TRUE, 
+          cor.coef = TRUE, cor.method = "pearson",
+          xlab = "area fruit (cm2)", ylab = "number of seeds")
+```
+
+
+
+Per Flank
+
+```{r}
+plot(fruits_df$num_seeds ~ fruits_df$area_fruit, col=fruits_df$Flank, ylab="Number of Seeds", xlab="Area of Fruit", pch=20)
+```
+
+
+
+Per Pierced / not Pierced fruits
+
+
+```{r}
+fruits_df$Color <- "grey60" 
+fruits_df[which(fruits_df$Holes=="TRUE"),]$Color <- "red4"
+
+plot(fruits_df$num_seeds ~ fruits_df$area_fruit, col=fruits_df$Color, ylab="Number of Seeds", xlab="Area of Fruit", pch=20)
+```
+
+
+
+-----------------------------------------------------------------------------------------------------------------
+
+
+THINGS TO DO:
+
+- Create a training model for new fruit data
+
+- Take into account frecuency and density of plants
+
+
+
+
+
+
+
+
+
+
+
+
+
+
