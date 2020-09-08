@@ -1,0 +1,17 @@
+Envelope_ID			identifier of the envelope with 2 fruits on plant
+
+Flank				phenotype/subspecie of the plant
+
+Holes				presence/absence holes in the fruit
+
+Larvae				number of larvae found inside the fruit
+
+Presence_indirect	presence of larvae directly (observation) or indirectly (ancient activity of larvae)
+
+Area_fruit			area of the fruit on lateral view (cm^2)
+
+Num_seeds			total numbers of seeds inside the fruit
+
+Mean_area_seeds		mean of the area of the total number of seeds inside the fruit (cm^2)
+
+Threshold			lower/mininum threshold of the area of each seed to count it (cm^2)
