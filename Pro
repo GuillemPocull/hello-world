@@ -1,6 +1,0 @@
-# Ara ho hauria de fer millor
-
-x <- 4 + e*2
-y <- 5-4
-x + y = 15 obviament vaya tulli jajaja
-crec que s'ha de cambiar
