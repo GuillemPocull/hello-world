@@ -1,9 +1,0 @@
-Envelope_ID   	identifier of the envelope with 2 fruits on plant
-
-Flank		phenotype/subspecie of the plant
-
-Fruits 		total number of fruits on plant
-
-Holes 		number of pierced fruits by weevils on plant
-
-Damage 		percentage expressed as parts per unit of Holes/Fruits
