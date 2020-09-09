@@ -1,0 +1,3 @@
+ID		unique individual identifier using standard pedigree sampling tag
+
+Hole_robbing	presence of a hole in the lower corola

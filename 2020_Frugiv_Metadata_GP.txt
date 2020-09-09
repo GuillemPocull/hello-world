@@ -1,0 +1,11 @@
+ID		unique individual identifier using standard pedigree sampling tag
+
+Hole_robbing	presence of a hole in the lower corola
+
+Num_larvae_I	number of larvae I inside or on the flower
+
+Num_larvae_II	number of syrphid larvae inside or on the flower
+
+Weevil_grey	number of grey weevils inside or on the flower
+
+Weevil_black	number of black weevils inside or on the flower

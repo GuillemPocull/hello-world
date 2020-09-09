@@ -1,0 +1,11 @@
+Flower_colour	abbreviation of long_colour
+
+Rosea		loci for anthocyanin (red or magenta) pigmentation
+
+Sulfurea	loci for aurone (yellow) pigmentation
+
+Long_colour	flower colour phenotype
+
+Spp		subspecies 'pseudomajus', 'striatum' or 'hybrid' individual
+
+ID		unique individual identifier using standard pedigree sampling tag
