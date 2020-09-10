@@ -1,13 +1,13 @@
 ID,hole_robbing,num_larvae_I,num_larvae_II,weevil_grey,weevil_black,notes
-pA0869,1,2,,,10 brown eggs together
-pA0114,1,0,1,,2 larvae different 
-pA0125,1,0,1,,I reach adulthood with photo. It is probably a sirphydae (see mail of Alex)
-pA0248,1,0,1,,I reach adulthood with photo. It is probably a sirfidae (see mail of Alex)
+pA0869,1,2,,,,10 brown eggs together
+pA0114,1,0,1,,,2 larvae different 
+pA0125,1,0,1,,,I reach adulthood with photo. It is probably a sirphydae (see mail of Alex)
+pA0248,1,0,1,,,I reach adulthood with photo. It is probably a sirfidae (see mail of Alex)
 pA0515,1,1,,,,
-pA0077,0,0,1,,larvae II (envelope)
-pA0007,1,1,,,Larvae was in the middle of the hole
+pA0077,0,0,1,,,larvae II (envelope)
+pA0007,1,1,,,,Larvae was in the middle of the hole
 pA0995,0,0,,,2,
-pA0018,1,0,,,ugly flower
+pA0018,1,0,,,,ugly flower
 pA0432,0,0,1,,,
 pA0662,1,0,,,,
 pA1212,1,0,,,,
@@ -872,7 +872,7 @@ pA0501,0,0,,,,
 pA0504,0,0,,,,
 pA0509,0,0,,,,
 pA0514,0,0,,,,
-pA0516,0,0,,,in the middle of the hole
+pA0516,0,0,,,,in the middle of the hole
 pA0517,0,0,,,,
 pA0525,0,0,,,,
 pA0531,0,0,,,,
