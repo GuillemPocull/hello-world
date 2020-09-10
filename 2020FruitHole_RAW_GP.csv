@@ -17,7 +17,7 @@ Envelope_ID,Flank,Holes,Larvae,presence_indirect,area_fruit,num_seeds,mean_area_
 12,magenta,1,0,1,1.130,569,0.010,0.005,dust and crumbled seeds
 13,magenta,0,0,0,1.266,826,0.013,0.005,
 13,magenta,1,0,0,1.595,773,0.010,0.005,
-15,magenta,0,0,0,0.670,28,NA,NA,There is no photo, this fruit has 28 seeds
+15,magenta,0,0,0,0.670,28,NA,NA,There is no photo and this fruit has 28 seeds
 15,magenta,1,1,1,0.885,136,0.009,0.005,
 16,magenta,0,0,0,1.198,653,0.008,0.005,
 16,magenta,1,1,1,1.158,476,0.009,0.005,
