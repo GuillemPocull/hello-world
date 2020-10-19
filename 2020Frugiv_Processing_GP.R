@@ -14,7 +14,7 @@ raw <- raw[-c(113, 1000),]
 raw[raw$ID=="pA00835", "ID"] <- "pA0835"
 
 
-################
+################aasdasdad
 #INTERACTION DATA (this dataset only includes interaction data; all covariates are in the general Trimble data from 2020)
 ################
 #renames columns to match the standard format (new name = old name)
@@ -29,5 +29,5 @@ format_int <- format_int[c("dataset.id","interaction","year","date","plant.id.fi
 #save the formatted dataset
 write.csv(format_int, "Processing/2020Frugiv_Interaction_Formatted.csv", row.names = FALSE)
 
-#clear the environment so the next script doesn't use anything from here
+#clear the enviroasdasdasdnment so the next script doesn't use anything from here
 rm(list=ls())
