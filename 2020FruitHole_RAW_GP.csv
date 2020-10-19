@@ -1,167 +1,148 @@
-Envelope_ID,Holes,Larvae_weevil,presence_indirect,notes
-1,1,0,0,
-1,1,1,1,
-2,0,0,0,
-2,0,0,0,
-3,0,0,0,
-3,1,1,1,In the photo doesn't appear the Envelope_ID so we had to discard it
-4,0,0,0,
-4,1,1,1,pupa (foto)
-5,0,0,0,
-5,1,0,0,
-6,0,0,0,
-6,1,1,1,
-7,0,0,0,
-7,1,0,1,dust and crumbled seeds
-8,0,0,0,
-8,1,1,1,
-9,,,,"the fruits were naturally opened, so we discard it"
-9,,,,"the fruits were naturally opened, so we discard it"
-10,0,0,0,
-10,1,1,1,
-11,0,0,0,
-11,1,1,1,
-12,0,0,0,
-12,1,0,1,dust and crumbled seeds
-13,0,0,0,
-13,1,0,0,
-14,0,0,0,
-14,0,0,0,
-15,0,0,0,"There is no photo, this fruit has 28 seeds"
-15,1,1,1,
-16,0,0,0,
-16,1,1,1,
-17,0,0,0,
-17,0,0,0,
-18,0,0,0,
-18,0,0,0,
-19,0,0,0,
-19,1,1,1,
-20,0,0,0,
-20,1,1,1,
-21,1,1,1,
-21,1,1,1,
-22,0,0,0,
-22,0,0,0,
-23,1,0,0,
-23,0,0,0,
-24,0,0,0,
-24,1,1,1,
-25,,,,"the fruits were naturally opened, so we discard it"
-25,,,,"the fruits were naturally opened, so we discard it"
-26,0,0,0,
-26,1,1,1,
-27,0,0,0,
-27,1,1,1,
-28,0,0,0,
-28,1,1,1,
-29,0,0,0,
-29,1,0,0,
-30,,,,"the fruits were naturally opened, so we discard it"
-30,,,,"the fruits were naturally opened, so we discard it"
-31,1,0,0,
-31,1,1,1,
-32,0,0,0,
-32,1,0,0,
-33,1,1,1,
-33,1,1,1,
-34,0,0,0,
-34,1,1,1,
-35,0,0,0,
-35,1,0,0,
-36,0,0,0,
-36,1,1,1,No photos because there is no seeds
-37,,,,"the fruits were naturally opened, so we discard it"
-37,,,,"the fruits were naturally opened, so we discard it"
-38,,,,"the fruits were naturally opened, so we discard it"
-38,,,,"the fruits were naturally opened, so we discard it"
-39,,,,"the fruits were naturally opened, so we discard it"
-39,,,,"the fruits were naturally opened, so we discard it"
-40,,,,"the fruits were naturally opened, so we discard it"
-40,,,,"the fruits were naturally opened, so we discard it"
-41,0,0,0,
-41,1,1,1,
-42,0,0,0,
-42,1,1,1,
-43,0,0,0,
-43,0,0,0,
-44,0,0,0,
-44,1,1,1,
-45,0,0,0,
-45,1,1,1,
-46,0,0,0,
-46,1,1,1,
-47,0,0,0,
-47,1,1,1,
-48,0,0,0,
-48,1,1,1,
-49,0,0,0,
-49,1,1,1,
-50,0,0,0,
-50,1,1,1,
-51,0,0,0,
-51,0,0,0,
-52,1,1,1,
-52,1,1,1,
-53,0,0,0,
-53,1,1,1,
-54,0,0,0,
-54,1,0,0,
-55,0,0,0,
-55,1,0,1,
-56,0,0,0,
-56,1,0,0,
-57,1,1,1,
-57,1,1,1,
-58,0,0,0,
-58,1,1,1,
-59,0,0,0,
-59,1,1,1,
-60,0,0,0,
-60,1,1,1,
-61,,,,"the fruits were naturally opened, so we discard it"
-61,,,,"the fruits were naturally opened, so we discard it"
-62,0,0,0,
-62,1,2,1,
-63,0,0,0,
-63,1,1,1,
-64,0,0,0,
-64,1,0,0,
-65,0,0,0,
-65,1,1,1,
-66,0,0,0,
-66,1,1,1,
-67,0,0,0,
-67,1,2,1,
-68,0,0,0,
-68,0,0,0,
-69,0,0,0,
-69,1,1,1,
-70,1,1,1,
-70,1,1,1,
-71,0,0,0,
-71,1,1,1,
-72,0,0,0,
-72,1,2,1,
-73,0,0,0,
-73,1,1,1,
-74,0,0,0,
-74,1,0,0,
-75,0,0,0,
-75,1,0,0,
-76,0,2,1,
-76,0,0,0,
-77,0,0,0,
-77,0,0,0,
-78,0,0,0,
-78,1,1,1,
-79,,,,"the fruits were naturally opened, so we discard it"
-79,1,2,1,"if the other is discarded, this one too because it is a pair"
-80,0,0,0,
-80,1,1,1,
-81,,,,"the fruits were naturally opened, so we discard it"
-81,,,,"the fruits were naturally opened, so we discard it"
-82,0,0,0,
-82,1,2,1,
-83,0,0,0,
-83,0,0,0,
+Envelope_ID	Flank	Holes	Larvae_weevil	presence_indirect	area_fruit	num_seeds	average_area_seeds	Threshold	Notes
+1	magenta	1	0	0					
+1	magenta	1	1	1					
+2	magenta	0	0	0					
+2	magenta	0	0	0					
+3	magenta	0	0	0					
+3	magenta	1	1	1					In the photo doesn't appear the Envelope_ID so we had to discard it
+4	magenta	0	0	0	1.310	322	0.007	0.005	
+4	magenta	1	1	1	1.382	76	0.007	0.005	pupa (foto)
+5	magenta	0	0	0	0.942	225	0.010	0.005	
+5	magenta	1	0	0	1.077	452	0.011	0.005	
+6	magenta	0	0	0	1.452	762	0.005	0.003	
+6	magenta	1	1	1	1.116	456	0.008	0.005	
+7	magenta	0	0	0	1.044	364	0.013	0.005	
+7	magenta	1	0	1	1.234	493	0.009	0.005	dust and crumbled seeds
+8	magenta	0	0	0	1.232	190	0.007	0.003	
+8	magenta	1	1	1	1.418	303	0.006	0.003	
+10	magenta	0	0	0	1.563	466	0.006	0.003	
+10	magenta	1	1	1	1.231	451	0.007	0.003	
+11	magenta	0	0	0	1.459	723	0.009	0.005	
+11	magenta	1	1	1	1.181	394	0.009	0.005	
+12	magenta	0	0	0	1.363	377	0.012	0.005	
+12	magenta	1	0	1	1.130	569	0.010	0.005	dust and crumbled seeds
+13	magenta	0	0	0	1.266	826	0.013	0.005	
+13	magenta	1	0	0	1.595	773	0.010	0.005	
+14	magenta	0	0	0					
+14	magenta	0	0	0					
+15	magenta	0	0	0	0.670	28			There is no photo and this fruit has 28 seeds
+15	magenta	1	1	1	0.885	136	0.009	0.005	
+16	magenta	0	0	0	1.198	653	0.008	0.005	
+16	magenta	1	1	1	1.158	476	0.009	0.005	
+17	magenta	0	0	0					
+17	magenta	0	0	0					
+18	magenta	0	0	0					
+18	magenta	0	0	0					
+19	magenta	0	0	0	0.888	305	0.011	0.005	
+19	magenta	1	1	1	1.244	604	0.008	0.005	
+20	magenta	0	0	0	0.997	459	0.011	0.005	
+20	magenta	1	1	1	0.959	283	0.010	0.005	
+21	magenta	1	1	1					
+21	magenta	1	1	1					
+22	magenta	0	0	0					
+22	magenta	0	0	0					
+23	magenta	0	0	0	1.269	302	0.007	0.003	
+23	magenta	1	0	0	1.035	199	0.007	0.003	
+24	magenta	0	0	0	1.224	629	0.010	0.005	
+24	magenta	1	1	1	1.393	244	0.070	0.005	
+26	magenta	0	0	0	0.935	210	0.090	0.005	
+26	magenta	1	1	1	0.868	74	0.009	0.005	
+27	magenta	0	0	0	0.976	405	0.005	0.003	
+27	magenta	1	1	1	1.033	290	0.006	0.003	
+28	magenta	0	0	0	1.077	788	0.010	0.005	
+28	magenta	1	1	1	0.951	557	0.009	0.005	
+29	magenta	0	0	0	1.292	261	0.009	0.005	
+29	magenta	1	0	0	1.364	554	0.010	0.005	
+31	magenta	1	0	0					
+31	magenta	1	1	1					
+32	magenta	0	0	0	0.748	227	0.007	0.003	
+32	magenta	1	0	0	0.993	461	0.006	0.003	
+33	magenta	1	1	1					
+33	magenta	1	1	1					
+34	magenta	0	0	0	1.344	724	0.007	0.003	
+34	magenta	1	1	1	1.339	553	0.006	0.003	
+35	magenta	0	0	0	1.338	465	0.006	0.003	
+35	magenta	1	0	0	0.741	236	0.005	0.003	
+36	magenta	0	0	0	0.650	70	0.008	0.005	
+36	magenta	1	1	1	0.578	0			No photos because there is no seeds
+41	yellow	0	0	0	1.109	516	0.011	0.005	
+41	yellow	1	1	1	1.230	391	0.005	0.003	
+42	yellow	0	0	0	1.422	790	0.005	0.003	
+42	yellow	1	1	1	1.227	530	0.004	0.003	
+43	yellow	0	0	0					
+43	yellow	0	0	0					
+44	yellow	0	0	0	1.591	822	0.009	0.005	
+44	yellow	1	1	1	1.456	393	0.009	0.005	
+45	yellow	0	0	0	1.147	482	0.006	0.003	
+45	yellow	1	1	1	0.637	124	0.009	0.005	
+46	yellow	0	0	0	1.220	715	0.011	0.005	
+46	yellow	1	1	1	1.166	400	0.005	0.003	
+47	yellow	0	0	0	0.770	364	0.005	0.003	
+47	yellow	1	1	1	0.753	61	0.004	0.003	
+48	yellow	0	0	0	1.401	629	0.010	0.005	
+48	yellow	1	1	1	1.355	336	0.005	0.003	
+49	yellow	0	0	0	0.823	512	0.008	0.005	
+49	yellow	1	1	1	1.082	460	0.011	0.005	
+50	yellow	0	0	0	1.114	818	0.006	0.003	
+50	yellow	1	1	1	0.921	357	0.005	0.003	
+51	yellow	0	0	0					
+51	yellow	0	0	0					
+52	yellow	1	1	1					
+52	yellow	1	1	1					
+53	yellow	0	0	0	0.918	630	0.008	0.005	
+53	yellow	1	1	1	1.025	594	0.010	0.005	
+54	yellow	0	0	0	0.690	192	0.011	0.005	
+54	yellow	1	0	0	1.004	415	0.010	0.005	
+55	yellow	0	0	0	1.127	831	0.006	0.003	
+55	yellow	1	0	1	0.949	309	0.006	0.003	dust and crumbled seeds
+56	yellow	0	0	0	1.368	702	0.014	0.005	
+56	yellow	1	0	0	1.494	713	0.008	0.005	
+57	yellow	1	1	1					
+57	yellow	1	1	1					
+58	yellow	0	0	0	1.137	667	0.011	0.005	
+58	yellow	1	1	1	0.857	508	0.010	0.005	
+59	yellow	0	0	0	1.074	586	0.009	0.005	
+59	yellow	1	1	1	0.981	285	0.005	0.003	
+60	yellow	0	0	0	1.327	349	0.007	0.003	
+60	yellow	1	1	1	1.403	210	0.006	0.003	
+62	yellow	0	0	0	1.233	726	0.005	0.003	
+62	yellow	1	2	1	0.893	339	0.004	0.003	
+63	yellow	0	0	0	0.927	350	0.005	0.003	
+63	yellow	1	1	1	1.117	334	0.005	0.003	
+64	yellow	0	0	0	1.007	635	0.005	0.003	
+64	yellow	1	0	0	1.028	506	0.006	0.003	
+65	yellow	0	0	0	1.146	441	0.006	0.003	
+65	yellow	1	1	1	1.148	288	0.007	0.003	
+66	yellow	0	0	0	1.585	708	0.006	0.003	
+66	yellow	1	1	1	1.205	254	0.006	0.003	
+67	yellow	0	0	0	0.875	347	0.008	0.005	
+67	yellow	1	2	1	1.060	280	0.009	0.005	
+68	yellow	0	0	0					
+68	yellow	0	0	0					
+69	yellow	0	0	0	0.980	543	0.005	0.003	
+69	yellow	1	1	1	1.029	493	0.005	0.003	
+70	yellow	1	1	1					
+70	yellow	1	1	1					
+71	yellow	0	0	0	1.242	775	0.006	0.003	
+71	yellow	1	1	1	1.124	205	0.005	0.003	
+72	yellow	0	0	0	1.029	442	0.005	0.003	
+72	yellow	1	2	1	1.365	617	0.005	0.003	
+73	yellow	0	0	0	1.523	877	0.007	0.003	
+73	yellow	1	1	1	1.607	824	0.006	0.003	
+74	yellow	0	0	0	1.067	477	0.006	0.003	
+74	yellow	1	0	0	0.987	483	0.007	0.003	
+75	yellow	0	0	0	1.173	510	0.006	0.003	
+75	yellow	1	0	0	1.460	789	0.006	0.003	
+76	yellow	0	2	1					
+76	yellow	0	0	0					
+77	yellow	0	0	0					
+77	yellow	0	0	0					
+78	yellow	0	0	0	0.978	470	0.008	0.005	
+78	yellow	1	1	1	0.833	220	0.005	0.003	
+79	yellow	1	2	1					
+80	yellow	0	0	0	1.358	253	0.008	0.005	
+80	yellow	1	1	1	1.482	260	0.007	0.003	
+82	yellow	0	0	0	1.444	756	0.007	0.003	
+82	yellow	1	2	1	1.345	611	0.006	0.003	
+83	yellow	0	0	0					
+83	yellow	0	0	0					
